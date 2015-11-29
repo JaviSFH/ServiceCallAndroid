@@ -21,6 +21,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * @author Javier Martínez
  *         https://play.google.com/store/apps/developer?id=JavNez
@@ -35,8 +38,6 @@ public class ContactsAdapter extends BaseAdapter {
     private List<Contact> contactsList;
 
     private Context mContext;
-
-    private ImageView imageViewContact;
 
     public ContactsAdapter(Context context, List<Contact> contactsList) {
         this.contactsList = contactsList;
@@ -60,30 +61,44 @@ public class ContactsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        //Inflamos la vista con el layout que contiene la representación gráfica de
-        // una fila con la información de un contacto
         LayoutInflater inflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contactView = inflater.inflate(R.layout.contact_row, parent, false);
 
-        //Recuperamos los elementos de la vista que debemos rellenar para mostrar al usuario
-        imageViewContact = (ImageView) contactView.findViewById(R.id.imageView);
-        TextView textViewName = (TextView) contactView.findViewById(R.id.textViewName);
-        TextView textViewPhone = (TextView) contactView.findViewById(R.id.textViewPhone);
+        //Reutilizamos la vista gracias al patrón ViewHolder
+        ViewHolder holder;
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
+        } else {
+            convertView = inflater.inflate(R.layout.contact_row, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        }
 
         //Rellenamos dichas vistas con la información del objeto Contact de la posición actual
-        textViewName.setText(contactsList.get(position).getName());
-        textViewPhone.setText(contactsList.get(position).getPhone());
+        holder.name.setText(contactsList.get(position).getName());
+        holder.phone.setText(contactsList.get(position).getPhone());
 
         //Iniciamos el AsyncTask para que descargue la imagen del contacto
-        new DownloadPicture(imageViewContact).execute(contactsList.get(position).getContactPictureURL());
+        new DownloadPicture(holder.contactImage).execute(contactsList.get(position).getContactPictureURL());
 
         //Ya tenemos la celda construida, por lo que sólo queda retornarla para que sea pintada en
         //la posición correspondiente del ListView, mientras que de en paralelo se estará descargando
         //la imagen de este contacto
 
-        return contactView;
+        return convertView;
+    }
+
+    /**
+     * Clase estática con los elementos del ViewHolder que nos permitirá reutilizar la vista
+     */
+    static class ViewHolder {
+        @Bind(R.id.imageView) ImageView contactImage;
+        @Bind(R.id.textViewName) TextView name;
+        @Bind(R.id.textViewPhone) TextView phone;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
     /**

@@ -8,6 +8,9 @@ import android.widget.Button;
 
 import com.example.javi.servicecall.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * @author Javier Martínez
  *         https://play.google.com/store/apps/developer?id=JavNez
@@ -23,15 +26,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+    }
 
-        //Se asigna un listener al botón y se inicia la navegación a la Activity de contactos
-        Button button = (Button) findViewById(R.id.buttonGetPersons);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ContactsActivity.class);
-                startActivity(intent);
-            }
-        });
+
+    @OnClick(R.id.buttonGetPersons)
+    public void onGetPersonsButtonPressed(Button button){
+        //Se inicia la navegación a la Activity de contactos
+        Intent intent = new Intent(getApplicationContext(), ContactsActivity.class);
+        startActivity(intent);
     }
 }

@@ -28,6 +28,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * @author Javier Martínez
  *         https://play.google.com/store/apps/developer?id=JavNez
@@ -48,21 +51,23 @@ public class ContactsActivity extends AppCompatActivity {
     /**
      * Widget de Android para mostrar elementos en forma de lista
      */
-    private ListView listViewContacts;
+    @Bind(R.id.listViewContacts)
+    ListView listViewContacts;
 
     /**
      * Barra de progresso (que se mostrará como un spinner circular) para indicar al usuario que se
      * está ejecutando una tarea y que debe esperar su resultado (UX)
      */
-    private ProgressBar progressBar;
+    @Bind(R.id.progressBar)
+        ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        listViewContacts = (ListView) findViewById(R.id.listViewContacts);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        //Inyectamos las vistas con ButterKnife
+        ButterKnife.bind(this);
     }
 
     @Override
