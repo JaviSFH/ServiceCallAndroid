@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.javi.servicecall.R;
 import com.example.javi.servicecall.models.Contact;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -78,8 +79,10 @@ public class ContactsAdapter extends BaseAdapter {
         holder.name.setText(contactsList.get(position).getName());
         holder.phone.setText(contactsList.get(position).getPhone());
 
-        //Iniciamos el AsyncTask para que descargue la imagen del contacto
-        new DownloadPicture(holder.contactImage).execute(contactsList.get(position).getContactPictureURL());
+        //Cargamos la imagen a través de su URL en su vista correspondiente
+        Picasso.with(mContext)
+                .load(contactsList.get(position).getContactPictureURL())
+                .into(holder.contactImage);
 
         //Ya tenemos la celda construida, por lo que sólo queda retornarla para que sea pintada en
         //la posición correspondiente del ListView, mientras que de en paralelo se estará descargando
@@ -98,60 +101,6 @@ public class ContactsAdapter extends BaseAdapter {
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
-        }
-    }
-
-    /**
-     * Con este hilo asíncrono cargaremos la imagen de cada contacto recibida como una URL en
-     * el primer servicio
-     */
-    public class DownloadPicture extends AsyncTask<String, Void, Bitmap> {
-
-        /**
-         * PlaceHolder donde colocaremos la imagen del contacto una vez cargada
-         */
-        private ImageView mImageView;
-
-        public DownloadPicture(ImageView imageView) {
-            this.mImageView = imageView;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-
-            String pictureURL = params[0];
-            Bitmap picture = null;
-
-            HttpURLConnection urlConnection = null;
-            try {
-                // Se establece la conexión con el servicio
-                URL url = new URL(pictureURL);
-                urlConnection = (HttpURLConnection) url.openConnection();
-
-                // Se realiza la llamada y se obtiene su respuesta
-                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-
-                //Convertimos la respuesta del servicio en un BitMap
-                picture = BitmapFactory.decodeStream(inputStream);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null)
-                    urlConnection.disconnect();
-            }
-
-            return picture;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap picture) {
-            super.onPostExecute(picture);
-
-            //La imagen se muestra en su place holder
-            if (picture != null && mImageView != null){
-                mImageView.setImageBitmap(picture);
-            }
         }
     }
 }
