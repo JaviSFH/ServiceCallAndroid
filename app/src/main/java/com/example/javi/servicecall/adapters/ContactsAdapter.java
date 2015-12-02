@@ -1,9 +1,6 @@
 package com.example.javi.servicecall.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +12,6 @@ import com.example.javi.servicecall.R;
 import com.example.javi.servicecall.models.Contact;
 import com.squareup.picasso.Picasso;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 import butterknife.Bind;
@@ -81,7 +73,7 @@ public class ContactsAdapter extends BaseAdapter {
 
         //Cargamos la imagen a través de su URL en su vista correspondiente
         Picasso.with(mContext)
-                .load(contactsList.get(position).getContactPictureURL())
+                .load(contactsList.get(position).getThumbnail())
                 .into(holder.contactImage);
 
         //Ya tenemos la celda construida, por lo que sólo queda retornarla para que sea pintada en

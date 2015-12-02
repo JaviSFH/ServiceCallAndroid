@@ -9,7 +9,8 @@ package com.example.javi.servicecall.models;
 public class Contact {
 
     /** URL donde se encuentra la imagen del contacto */
-    private String contactPictureURL;
+
+    private String thumbnail;
 
     /** Nombre del contacto */
     private String name;
@@ -18,18 +19,18 @@ public class Contact {
     private String phone;
 
     public Contact(String contactPicture, String name, String phone) {
-        this.contactPictureURL = contactPicture;
+        this.thumbnail = contactPicture;
         this.name = name;
         this.phone = phone;
     }
 
     //region Getters and Setters
-    public String getContactPictureURL() {
-        return contactPictureURL;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setContactPictureURL(String contactPictureURL) {
-        this.contactPictureURL = contactPictureURL;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getName() {

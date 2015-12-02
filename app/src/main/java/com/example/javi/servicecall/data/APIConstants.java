@@ -11,5 +11,7 @@ package com.example.javi.servicecall.data;
 public class APIConstants {
 
     /** URL del servicio */
-    public static final String SERVICE_ENDPOINT = "http://www.mocky.io/v2/565a12b61200009431de5b99";
+    public static final String SERVICE_ENDPOINT = "http://www.mocky.io";
+
+    public static final String CONTACTS_SERVICE = "/v2/565a12b61200009431de5b99";
 }
